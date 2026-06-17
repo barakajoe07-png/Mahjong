@@ -1,0 +1,6 @@
+{
+  "name": "Imperial Arena",
+  "description": "至尊皇冠棋牌：专为全球雀友打造的至尊地方麻将（龙泉麻将、成都血战到底）及极速跑得快扑克对战平台。拟真3D绿色呢绒桌面、全方位座位轮盘、极速发牌体验以及沉浸式国风对战音画体验。",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
