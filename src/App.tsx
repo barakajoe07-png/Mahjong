@@ -273,7 +273,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center p-0 md:p-6 select-none font-sans overflow-x-hidden antialiased">
+    <div className="min-h-screen bg-slate-950 bg-[radial-gradient(ellipse_at_center,_rgba(40,15,85,0.6)_0%,_rgba(2,1,10,0.98)_100%)] flex flex-col items-center justify-center p-0 md:p-6 select-none font-sans overflow-x-hidden antialiased">
       {/* 
         PREMIUM RESPONSIVE MOBILE FRAME CONTAINER:
         On desktop, we enclose the entire platform inside a sleek 
@@ -356,10 +356,10 @@ export default function App() {
                   </div>
                 </div>
 
-                {/* Gold Coins Treasury */}
-                <div className="bg-indigo-950/50 border border-brand-purple/30 rounded-2xl px-3.5 py-1.5 flex items-center gap-2">
-                  <Coins size={14} className="text-brand-gold animate-bounce" />
-                  <span className="text-sm font-display font-extrabold text-brand-gold tracking-wide">
+                {/* Gold Coins Treasury - Shimmering, Pulsing and hover responsive and styled */}
+                <div className="bg-gradient-to-r from-amber-500/10 to-amber-600/15 border border-brand-gold/45 rounded-2xl px-3.5 py-1.5 flex items-center gap-2 shadow-[0_0_15px_rgba(251,191,36,0.25)] animate-pulse hover:animate-none group cursor-pointer transition-all hover:scale-105 active:scale-95 select-none">
+                  <Coins size={14} className="text-brand-gold group-hover:rotate-12 transition-transform" />
+                  <span className="text-sm font-display font-black text-brand-gold tracking-wide">
                     {user?.points.toLocaleString()}
                   </span>
                 </div>
@@ -509,41 +509,73 @@ export default function App() {
                       </div>
 
                       <div className="space-y-4">
-                        {clubsList.map((club) => (
-                          <GlassCard key={club.id} className="border border-white/5 hover:border-brand-purple/20 transition-all duration-300" padding="p-5">
-                            <div className="flex items-center justify-between mb-4">
-                              <div>
-                                <span className="text-white font-gaming font-bold text-base block">{club.name}</span>
-                                <span className="text-[9.5px] text-brand-light-purple/60 uppercase font-bold">
-                                  Club ID Referral: <strong className="text-brand-gold font-display text-[11px] ml-1">{club.code}</strong>
+                        {clubsList.map((club) => {
+                          // Generate unique color schemes & avatars for each club based on their unique name/letters
+                          const isLucky = club.name.toLowerCase().includes('lucky') || club.code.includes('888');
+                          const isPhoenix = club.name.toLowerCase().includes('phoenix') || club.name.toLowerCase().includes('royal');
+                          
+                          let cardTheme = 'from-emerald-950/20 via-slate-950 to-teal-950/20 border-teal-500/20 hover:border-teal-400/50 shadow-[0_4px_20px_rgba(20,184,166,0.15)]';
+                          let avatarBg = 'bg-teal-500/20 border-teal-500/40 text-teal-400';
+                          let avatarText = '🐉';
+                          if (isLucky) {
+                            cardTheme = 'from-red-950/20 via-slate-950 to-amber-950/20 border-red-500/25 hover:border-brand-gold shadow-[0_4px_20px_rgba(239,68,68,0.15)]';
+                            avatarBg = 'bg-brand-gold/20 border-brand-gold/40 text-brand-gold';
+                            avatarText = '🏮';
+                          } else if (isPhoenix) {
+                            cardTheme = 'from-fuchsia-950/20 via-slate-950 to-purple-950/20 border-purple-500/35 hover:border-purple-400 shadow-[0_4px_20px_rgba(168,85,247,0.15)]';
+                            avatarBg = 'bg-purple-500/20 border-purple-500/40 text-purple-300';
+                            avatarText = '👑';
+                          }
+
+                          return (
+                            <GlassCard key={club.id} className={`bg-gradient-to-br ${cardTheme} border hover:shadow-[0_4px_25px_rgba(251,191,36,0.1)] transition-all duration-300`} padding="p-5">
+                              <div className="flex items-center justify-between mb-4">
+                                <div className="flex items-center gap-3">
+                                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center border font-gaming text-base shadow-inner ${avatarBg}`}>
+                                    {avatarText}
+                                  </div>
+                                  <div>
+                                    <span className="text-white font-gaming font-extrabold text-base block tracking-tight leading-snug">{club.name}</span>
+                                    <span className="text-[9px] text-brand-light-purple/60 uppercase font-bold tracking-widest block mt-0.5">
+                                      ID: <strong className="text-brand-gold font-display text-[10.5px] ml-1">{club.code}</strong>
+                                    </span>
+                                  </div>
+                                </div>
+                                <span className="bg-emerald-950/60 border border-emerald-500/35 text-emerald-400 px-2 py-0.5 rounded-full text-[8.5px] font-bold uppercase tracking-wider">
+                                  Affiliated
                                 </span>
                               </div>
-                              <span className="bg-emerald-950/60 border border-emerald-500/30 text-emerald-400 px-2 py-0.5 rounded text-[9.5px] font-bold uppercase tracking-wider">
-                                Affiliated
-                              </span>
-                            </div>
 
-                            <div className="grid grid-cols-2 gap-2 text-[11px] text-brand-light-purple/70 leading-relaxed border-t border-white/5 pt-3">
-                              <div>Active Tables: <strong className="text-white">{club.roomsActive} Active</strong></div>
-                              <div>Total Members: <strong className="text-white">{club.memberCount} Players</strong></div>
-                              <div className="col-span-2 mt-1">
-                                Club Treasury Bank: <strong className="text-brand-gold font-display text-xs">{club.points.toLocaleString()} Chips</strong>
+                              {/* Bento Dashboard Statistics Panels */}
+                              <div className="grid grid-cols-3 gap-2 border-t border-b border-white/5 py-3 mb-4">
+                                <div className="bg-white/[0.02] hover:bg-white/[0.04] p-2 rounded-xl text-center border border-white/5 transition-colors">
+                                  <span className="block text-[7.5px] text-brand-light-purple/50 uppercase font-black tracking-wider mb-1">Active Tables</span>
+                                  <span className="text-sm font-bold text-emerald-400 font-display">{club.roomsActive} Live</span>
+                                </div>
+                                <div className="bg-white/[0.02] hover:bg-white/[0.04] p-2 rounded-xl text-center border border-white/5 transition-colors">
+                                  <span className="block text-[7.5px] text-brand-light-purple/50 uppercase font-black tracking-wider mb-1">Total Members</span>
+                                  <span className="text-sm font-bold text-purple-300 font-display">{club.memberCount} Plrs</span>
+                                </div>
+                                <div className="bg-white/[0.02] hover:bg-white/[0.04] p-2 rounded-xl text-center border border-white/5 transition-colors">
+                                  <span className="block text-[7.5px] text-brand-light-purple/50 uppercase font-black tracking-wider mb-1">Treasury</span>
+                                  <span className="text-sm font-bold text-brand-gold font-display truncate block max-w-full">{club.points.toLocaleString()}</span>
+                                </div>
                               </div>
-                            </div>
 
-                            {/* Expanded Management Entry Trigger Button */}
-                            <button
-                              onClick={() => {
-                                setSelectedClub(club);
-                                setMemberSearchQuery('');
-                              }}
-                              className="w-full mt-4 py-2 px-3 rounded-xl bg-gradient-to-r from-indigo-950 to-purple-950/80 hover:from-indigo-900 hover:to-purple-900 border border-brand-purple/30 text-[10px] text-brand-light-purple hover:text-white font-gaming font-bold uppercase tracking-widest transition-all active:scale-[0.98] flex items-center justify-center gap-1.5 cursor-pointer"
-                            >
-                              <Users size={12} className="text-brand-gold" />
-                              Manage Members & Stats
-                            </button>
-                          </GlassCard>
-                        ))}
+                              {/* Expanded Management Entry Trigger Button */}
+                              <button
+                                onClick={() => {
+                                  setSelectedClub(club);
+                                  setMemberSearchQuery('');
+                                }}
+                                className="w-full py-2 px-3 rounded-xl bg-gradient-to-r from-zinc-900 via-neutral-900 to-zinc-900 hover:from-indigo-950 hover:to-purple-950 border border-white/10 hover:border-brand-purple/40 text-[9px] text-brand-light-purple hover:text-white font-gaming font-bold uppercase tracking-widest transition-all active:scale-[0.98] flex items-center justify-center gap-1.5 cursor-pointer"
+                              >
+                                <Users size={12} className="text-brand-gold" />
+                                Manage Members & Stats
+                              </button>
+                            </GlassCard>
+                          );
+                        })}
 
                         {clubsList.length === 0 && (
                           <div className="text-center py-10 text-brand-light-purple/40 text-xs tracking-wider uppercase font-gaming">
@@ -713,30 +745,48 @@ export default function App() {
                     Royal Coins & Chips Shop
                   </h2>
 
-                  {/* Chips Top Up Simulators */}
-                  <div className="grid grid-cols-2 gap-3">
+                  {/* Chips Top Up Simulators styled as premium shop products */}
+                  <div className="grid grid-cols-2 gap-4">
                     <GlassCard
                       onClick={() => handleActionTopup(10000)}
-                      className="border border-brand-gold/20 hover:border-brand-gold/50 cursor-pointer text-center relative overflow-hidden active:scale-95 transition-all"
+                      className="border border-brand-gold/30 hover:border-brand-gold hover:shadow-[0_0_15px_rgba(251,191,36,0.3)] bg-gradient-to-b from-brand-gold/10 to-transparent cursor-pointer text-center relative overflow-hidden active:scale-95 transition-all group"
                       padding="p-4"
                     >
-                      <Coins className="mx-auto text-brand-gold mb-2 animate-bounce" size={20} />
+                      <div className="absolute top-0 right-0 bg-brand-gold text-slate-950 text-[8px] font-black uppercase px-1.5 py-0.5 rounded-bl">
+                        FREE
+                      </div>
+                      <Coins className="mx-auto text-brand-gold mb-2 group-hover:scale-110 transition-transform" size={24} />
                       <span className="block font-gaming font-black text-white text-base">10,000 Chips</span>
-                      <span className="text-[10px] text-brand-gold mt-1 block font-gaming uppercase tracking-wider">Free Demo Grant</span>
+                      <div className="my-1.5 flex items-center justify-center gap-1">
+                        <span className="text-[10px] text-zinc-500 line-through">$4.99</span>
+                        <span className="text-xs text-brand-gold font-bold font-display">$0.00</span>
+                      </div>
+                      <button className="w-full bg-brand-gold/25 group-hover:bg-brand-gold text-brand-gold group-hover:text-slate-950 text-[10px] font-gaming font-bold py-1 px-2 rounded-lg transition-all border border-brand-gold/30 group-hover:border-transparent uppercase tracking-wider">
+                        Claim Grant 🎁
+                      </button>
                     </GlassCard>
 
                     <GlassCard
                       onClick={() => handleActionTopup(50000)}
-                      className="border border-brand-gold/20 hover:border-brand-gold/50 cursor-pointer text-center relative overflow-hidden active:scale-95 transition-all"
+                      className="border border-purple-500/20 hover:border-purple-400 hover:shadow-[0_0_15px_rgba(168,85,247,0.3)] bg-gradient-to-b from-purple-500/10 to-transparent cursor-pointer text-center relative overflow-hidden active:scale-95 transition-all group"
                       padding="p-4"
                     >
-                      <Sparkles className="mx-auto text-brand-gold mb-2 animate-pulse" size={20} />
+                      <div className="absolute top-0 right-0 bg-purple-500 text-white text-[8px] font-black uppercase px-1.5 py-0.5 rounded-bl">
+                        VIP GIFT
+                      </div>
+                      <Sparkles className="mx-auto text-purple-400 mb-2 group-hover:scale-110 transition-transform" size={24} />
                       <span className="block font-gaming font-black text-white text-base">50,000 Chips</span>
-                      <span className="text-[10px] text-brand-gold mt-1 block font-gaming uppercase tracking-wider">Supreme VIP Special</span>
+                      <div className="my-1.5 flex items-center justify-center gap-1">
+                        <span className="text-[10px] text-zinc-500 line-through">$24.99</span>
+                        <span className="text-xs text-brand-gold font-bold font-display">$0.00</span>
+                      </div>
+                      <button className="w-full bg-purple-500/20 group-hover:bg-purple-500 text-purple-200 group-hover:text-slate-950 text-[10px] font-gaming font-bold py-1 px-2 rounded-lg transition-all border border-purple-500/30 group-hover:border-transparent uppercase tracking-wider">
+                        Power Up ⚡
+                      </button>
                     </GlassCard>
                   </div>
 
-                  {/* Transaction logs */}
+                  {/* Transaction logs with premium status borders */}
                   <div className="space-y-3">
                     <span className="text-[11px] font-gaming font-bold tracking-widest text-brand-light-purple/50 uppercase block">
                       Billing & Transaction Logs
@@ -745,17 +795,20 @@ export default function App() {
                     <div className="space-y-2 max-h-[220px] overflow-y-auto pr-1 no-scrollbar">
                       {transactions.map((tx) => {
                         const isGain = tx.amount > 0;
+                        const cardBorder = isGain ? 'border-l-4 border-l-brand-emerald' : 'border-l-4 border-l-rose-500';
+                        const cardBg = isGain ? 'bg-emerald-950/10' : 'bg-rose-950/10';
+
                         return (
                           <div
                             key={tx.id}
-                            className="bg-black/30 border border-white/5 rounded-xl p-3 flex items-center justify-between text-xs"
+                            className={`border border-white/5 rounded-xl p-3 flex items-center justify-between text-xs transition-colors ${cardBorder} ${cardBg}`}
                           >
                             <div className="flex flex-col gap-0.5">
                               <span className="text-white font-bold">{tx.description}</span>
                               <span className="text-[10px] text-brand-light-purple/40">{tx.timestamp}</span>
                             </div>
                             <span
-                              className={`font-display font-black text-sm ${isGain ? 'text-brand-emerald' : 'text-rose-400'}`}
+                              className={`font-display font-black text-sm px-2 py-0.5 rounded ${isGain ? 'bg-emerald-950/40 text-brand-emerald' : 'bg-rose-950/40 text-rose-300'}`}
                             >
                               {isGain ? `+${tx.amount.toLocaleString()}` : tx.amount.toLocaleString()}
                             </span>
@@ -775,39 +828,70 @@ export default function App() {
                   </h2>
 
                   <div className="space-y-4 max-h-[460px] overflow-y-auto pr-1 no-scrollbar">
-                    {historyRecords.map((rec) => (
-                      <GlassCard key={rec.id} className="border border-white/5" padding="p-4">
-                        <div className="flex justify-between items-center mb-3">
-                          <div>
-                            <span className="bg-brand-purple/20 border border-brand-light-purple/40 text-brand-light-purple text-[10px] font-bold px-2 py-0.5 rounded leading-none uppercase font-gaming">
-                              {rec.gameType === GameType.PAODEKUAI ? 'Paodekuai Poker' : rec.gameType === GameType.CHENGDU_BLOOD_BATTLE ? 'Chengdu Blood' : 'Longquan Mahjong'}
-                            </span>
-                            <span className="text-[10px] text-brand-light-purple/50 ml-2 font-display">
-                              Room No: <strong>{rec.roomNo}</strong>
-                            </span>
-                          </div>
-                          <span className="text-[10px] text-brand-light-purple/40 font-mono">
-                            {rec.timestamp}
-                          </span>
-                        </div>
+                    {historyRecords.map((rec) => {
+                      // Determine theme characteristics per game
+                      let borderClass = 'border-l-4 border-l-amber-500';
+                      let bgThemeClass = 'bg-amber-950/10';
+                      if (rec.gameType === GameType.LONGQUAN_MAHJONG) {
+                        borderClass = 'border-l-4 border-l-emerald-500';
+                        bgThemeClass = 'bg-emerald-950/10';
+                      } else if (rec.gameType === GameType.CHENGDU_BLOOD_BATTLE) {
+                        borderClass = 'border-l-4 border-l-red-500';
+                        bgThemeClass = 'bg-red-950/10';
+                      } else if (rec.gameType === GameType.PAODEKUAI) {
+                        borderClass = 'border-l-4 border-l-blue-500';
+                        bgThemeClass = 'bg-blue-950/10';
+                      }
 
-                        <div className="space-y-1 pt-2 border-t border-white/5">
-                          {rec.players.map((item, idx) => {
-                            const isWin = item.scoreChange > 0;
-                            return (
-                              <div key={idx} className="flex justify-between items-center text-xs">
-                                <span className={`font-semibold ${item.nickname === 'ImperialMaster' || item.nickname === user?.nickname ? 'text-brand-gold font-gaming' : 'text-stone-300 font-sans'}`}>
-                                  {item.nickname}
-                                </span>
-                                <span className={`font-display font-extrabold ${isWin ? 'text-brand-emerald' : 'text-rose-400'}`}>
-                                  {isWin ? `+${item.scoreChange}` : item.scoreChange}
-                                </span>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </GlassCard>
-                    ))}
+                      // Calculate user net result
+                      const myPerf = rec.players.find(
+                        (p) => p.nickname === 'ImperialMaster' || p.nickname === user?.nickname
+                      );
+                      const netScore = myPerf ? myPerf.scoreChange : 0;
+                      const isNetWin = netScore >= 0;
+
+                      return (
+                        <GlassCard key={rec.id} className={`${borderClass} ${bgThemeClass} border border-white/5 hover:border-brand-purple/20 transition-all`} padding="p-4">
+                          <div className="flex justify-between items-start mb-3">
+                            <div>
+                              <span className="bg-brand-purple/20 border border-brand-light-purple/40 text-brand-light-purple text-[10px] font-bold px-2 py-0.5 rounded leading-none uppercase font-gaming">
+                                {rec.gameType === GameType.PAODEKUAI ? 'Paodekuai Poker' : rec.gameType === GameType.CHENGDU_BLOOD_BATTLE ? 'Chengdu Blood' : 'Longquan Mahjong'}
+                              </span>
+                              <span className="text-[10px] text-brand-light-purple/50 ml-2 font-display block sm:inline mt-1 sm:mt-0">
+                                Room No: <strong>{rec.roomNo}</strong>
+                              </span>
+                            </div>
+                            <div className="flex flex-col items-end text-right gap-1">
+                              <span className="text-[9px] text-brand-light-purple/40 font-mono">
+                                {rec.timestamp}
+                              </span>
+                              {myPerf && (
+                                <div className={`text-[10px] font-gaming font-black px-2 py-0.5 rounded border ${isNetWin ? 'bg-emerald-950/40 text-brand-emerald border-emerald-500/20' : 'bg-rose-950/40 text-rose-400 border-rose-500/20'}`}>
+                                  {isNetWin ? `+${netScore.toLocaleString()}` : netScore.toLocaleString()} pts
+                                </div>
+                              )}
+                            </div>
+                          </div>
+
+                          <div className="space-y-2 pt-2 border-t border-white/5">
+                            {rec.players.map((item, idx) => {
+                              const isWin = item.scoreChange > 0;
+                              const isMe = item.nickname === 'ImperialMaster' || item.nickname === user?.nickname;
+                              return (
+                                <div key={idx} className={`flex justify-between items-center text-xs py-0.5 px-1.5 rounded ${isMe ? 'bg-white/5' : ''}`}>
+                                  <span className={`font-semibold ${isMe ? 'text-brand-gold font-gaming' : 'text-stone-300 font-sans'}`}>
+                                    {item.nickname} {isMe && '(You)'}
+                                  </span>
+                                  <span className={`font-display font-black text-sm ${isWin ? 'text-brand-emerald' : 'text-rose-400'}`}>
+                                    {isWin ? `+${item.scoreChange.toLocaleString()}` : item.scoreChange.toLocaleString()}
+                                  </span>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </GlassCard>
+                      );
+                    })}
                   </div>
                 </div>
               )}
@@ -832,16 +916,20 @@ export default function App() {
 
         {/* --- BOTTOM ADHESIVE NAVIGATION TAB BAR --- */}
         {isLoggedIn && !activeGameRoom && (
-          <div className="bg-black/95 border-t border-brand-purple/15 px-6 py-4 flex items-center justify-between z-10 select-none pb-safe">
+          <div className="bg-black/95 border-t border-brand-purple/20 px-4 py-4.5 flex items-center justify-around z-10 select-none pb-safe shadow-[0_-10px_30px_rgba(0,0,0,0.9)]">
             <button
               onClick={() => {
                 setActiveTab('home');
                 setIsInLobby(false);
               }}
-              className={`flex flex-col items-center gap-1 cursor-pointer transition-colors ${activeTab === 'home' ? 'text-brand-gold' : 'text-brand-light-purple/50 hover:text-white'}`}
+              style={{ contentVisibility: 'auto' }}
+              className={`flex flex-col items-center gap-1.5 cursor-pointer transition-all duration-300 min-w-[70px] relative py-1 ${activeTab === 'home' ? 'text-brand-gold filter drop-shadow-[0_0_10px_rgba(251,191,36,0.5)] scale-110 font-bold' : 'text-brand-light-purple/50 hover:text-white hover:scale-105'}`}
             >
-              <Sparkles size={16} />
-              <span className="text-[10px] font-gaming font-bold tracking-wider uppercase">Matchmaking</span>
+              <Sparkles size={18} className={activeTab === 'home' ? 'animate-pulse' : ''} />
+              <span className="text-[9.5px] font-gaming tracking-widest uppercase">Match</span>
+              {activeTab === 'home' && (
+                <span className="absolute bottom-0 w-5 h-0.5 bg-brand-gold rounded-full" />
+              )}
             </button>
 
             <button
@@ -849,10 +937,13 @@ export default function App() {
                 setActiveTab('club');
                 setIsInLobby(false);
               }}
-              className={`flex flex-col items-center gap-1 cursor-pointer transition-colors ${activeTab === 'club' ? 'text-brand-gold' : 'text-brand-light-purple/50 hover:text-white'}`}
+              className={`flex flex-col items-center gap-1.5 cursor-pointer transition-all duration-300 min-w-[70px] relative py-1 ${activeTab === 'club' ? 'text-brand-gold filter drop-shadow-[0_0_10px_rgba(251,191,36,0.5)] scale-110 font-bold' : 'text-brand-light-purple/50 hover:text-white hover:scale-105'}`}
             >
-              <Users size={16} />
-              <span className="text-[10px] font-gaming font-bold tracking-wider uppercase">Tea Clubs</span>
+              <Users size={18} />
+              <span className="text-[9.5px] font-gaming tracking-widest uppercase">Clubs</span>
+              {activeTab === 'club' && (
+                <span className="absolute bottom-0 w-5 h-0.5 bg-brand-gold rounded-full" />
+              )}
             </button>
 
             <button
@@ -860,10 +951,13 @@ export default function App() {
                 setActiveTab('wallet');
                 setIsInLobby(false);
               }}
-              className={`flex flex-col items-center gap-1 cursor-pointer transition-colors ${activeTab === 'wallet' ? 'text-brand-gold' : 'text-brand-light-purple/50 hover:text-white'}`}
+              className={`flex flex-col items-center gap-1.5 cursor-pointer transition-all duration-300 min-w-[70px] relative py-1 ${activeTab === 'wallet' ? 'text-brand-gold filter drop-shadow-[0_0_10px_rgba(251,191,36,0.5)] scale-110 font-bold' : 'text-brand-light-purple/50 hover:text-white hover:scale-105'}`}
             >
-              <Coins size={16} />
-              <span className="text-[10px] font-gaming font-bold tracking-wider uppercase">Coins Shop</span>
+              <Coins size={18} />
+              <span className="text-[9.5px] font-gaming tracking-widest uppercase">Shop</span>
+              {activeTab === 'wallet' && (
+                <span className="absolute bottom-0 w-5 h-0.5 bg-brand-gold rounded-full" />
+              )}
             </button>
 
             <button
@@ -871,10 +965,13 @@ export default function App() {
                 setActiveTab('records');
                 setIsInLobby(false);
               }}
-              className={`flex flex-col items-center gap-1 cursor-pointer transition-colors ${activeTab === 'records' ? 'text-brand-gold' : 'text-brand-light-purple/50 hover:text-white'}`}
+              className={`flex flex-col items-center gap-1.5 cursor-pointer transition-all duration-300 min-w-[70px] relative py-1 ${activeTab === 'records' ? 'text-brand-gold filter drop-shadow-[0_0_10px_rgba(251,191,36,0.5)] scale-110 font-bold' : 'text-brand-light-purple/50 hover:text-white hover:scale-105'}`}
             >
-              <Clock size={16} />
-              <span className="text-[10px] font-gaming font-bold tracking-wider uppercase">Records</span>
+              <Clock size={18} />
+              <span className="text-[9.5px] font-gaming tracking-widest uppercase">Records</span>
+              {activeTab === 'records' && (
+                <span className="absolute bottom-0 w-5 h-0.5 bg-brand-gold rounded-full" />
+              )}
             </button>
           </div>
         )}
